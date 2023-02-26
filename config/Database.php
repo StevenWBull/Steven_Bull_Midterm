@@ -1,9 +1,14 @@
 <?php
+    // Load in env
+    require __DIR__ . '/vendor/autoload.php';
+    $dotenv = Dotenv\Dotenv::createImmutable(__DIR__, '.env');
+    $dotenv->load();
+
     class Database {
-        private $host = 'localhost';
-        private $db_name = 'db name'
-        private $username = 'root';
-        private $password = '';
+        private $host = $_SERVER['APP_ENV'] === 'prod' ? $_ENV['DB_HOST'] : $_ENV['DB_DEV_HOST'];
+        private $db_name = $_SERVER['APP_ENV'] === 'prod' ? $_ENV['DB_NAME'] : $_ENV['DB_DEV_NAME'];
+        private $username = $_SERVER['APP_ENV'] === 'prod' ? $_ENV['DB_USERNAME'] : $_ENV['DB_DEV_USERNAME'];
+        private $password = $_SERVER['APP_ENV'] === 'prod' ? $_ENV['DB_PASS'] : $_ENV['DB_DEV_PASS'];
         private $conn;
 
         // DB Connect
