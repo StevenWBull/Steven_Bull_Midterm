@@ -23,6 +23,17 @@
             ";
         }
 
+        private function fatal_error($msg) {
+            header('HTTP/1.1 500 Internal Server Error');
+
+            if (getenv('APP_ENV') === 'prod')
+                echo json_encode(
+                    array('message' => 'Internal Server Error')
+                ); 
+            else
+                echo 'Caught exception: ' . $msg;
+        }
+
         // Get
         public function read_all() {
             try {
@@ -36,7 +47,8 @@
 
                 return $stmt;
             } catch(Throwable $e) {
-                echo 'Caught exception: ',  $e->getMessage(), "\n";
+                $msg = $e->getMessage();
+                $this->fatal_error($msg);
             }
         }
 
@@ -52,7 +64,8 @@
 
                 return $stmt;
             } catch(Throwable $e) {
-                echo 'Caught exception: ',  $e->getMessage(), "\n";
+                $msg = $e->getMessage();
+                $this->fatal_error($msg);
             }
         }
 
@@ -68,7 +81,8 @@
 
                 return $stmt;
             } catch(Throwable $e) {
-                echo 'Caught exception: ',  $e->getMessage(), "\n";
+                $msg = $e->getMessage();
+                $this->fatal_error($msg);
             }
         }
 
@@ -87,7 +101,8 @@
 
                 return $stmt;
             } catch(Throwable $e) {
-                echo 'Caught exception: ',  $e->getMessage(), "\n";
+                $msg = $e->getMessage();
+                $this->fatal_error($msg);
             }
         }
     }

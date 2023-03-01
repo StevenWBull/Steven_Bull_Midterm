@@ -9,6 +9,21 @@ class QuoteController {
         $this->model = $model;
     }
 
+    private function no_data_found() {
+        header('HTTP/1.1 404 Not Found');
+        return json_encode(
+            array('message' => 'No Quotes Found.')
+        ); 
+    }
+
+    private function fatal_error($fn, $msg) {
+        $class_name = debug_backtrace()[1]['class'];
+        if (getenv('APP_ENV') === 'prod')
+            return; // Would send to the used logger here like Datadog
+        else
+            return "Error in {$class_name}->{$fn}: {$msg}";
+    }
+
     private function create_return_arr($result, $count, $random) {
         $quote_arr = array();
         $quote_arr['data_count'] = $count;
@@ -45,15 +60,12 @@ class QuoteController {
     
             $num = $result->rowCount();
     
-            if ($num > 0) {
+            if ($num > 0)
                 return $this->create_return_arr($result, $num, $random);
-            } else {
-                return json_encode(
-                    array('message' => 'No Quotes Found.')
-                );
-            }
+            else
+                return $this->no_data_found();
         } catch (Throwable $e) {
-            return 'Error in QuoteController->read_all: ' . $e->getMessage();
+            return $this->fatal_error(__FUNCTION__, $e->getMessage());
         }
     }
 
@@ -65,15 +77,12 @@ class QuoteController {
     
             $num = $result->rowCount();
     
-            if ($num > 0) {
+            if ($num > 0)
                 return $this->create_return_arr($result, $num, $random);
-            } else {
-                return json_encode(
-                    array('message' => 'No Quotes Found.')
-                );
-            }
+            else
+                return $this->no_data_found();
         } catch (Throwable $e) {
-            return 'Error in QuoteController->read_one: ' . $e->getMessage();
+            return $this->fatal_error(__FUNCTION__, $e->getMessage());
         }
     }
 
@@ -85,15 +94,12 @@ class QuoteController {
     
             $num = $result->rowCount();
     
-            if ($num > 0) {
+            if ($num > 0)
                 return $this->create_return_arr($result, $num, $random);
-            } else {
-                return json_encode(
-                    array('message' => 'No Quotes Found.')
-                );
-            }
+            else
+                return $this->no_data_found();
         } catch (Throwable $e) {
-            return 'Error in QuoteController->read_all_from_author: ' . $e->getMessage();
+            return $this->fatal_error(__FUNCTION__, $e->getMessage());
         }
     }
 
@@ -105,15 +111,12 @@ class QuoteController {
     
             $num = $result->rowCount();
     
-            if ($num > 0) {
+            if ($num > 0)
                 return $this->create_return_arr($result, $num, $random);
-            } else {
-                return json_encode(
-                    array('message' => 'No Quotes Found.')
-                );
-            }
+            else
+                return $this->no_data_found();
         } catch (Throwable $e) {
-            return 'Error in QuoteController->read_all_from_author_with_category: ' . $e->getMessage();
+            return $this->fatal_error(__FUNCTION__, $e->getMessage());
         }
     }
 }

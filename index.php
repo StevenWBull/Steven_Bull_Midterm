@@ -7,8 +7,10 @@ require_once 'Router.php';
 require_once './config/Database.php';
 
 require_once './models/Quote.php';
+require_once './models/Author.php';
 
 require_once './api/quote/QuoteController.php';
+require_once './api/author/AuthorController.php';
 
 $database = new Database();
 define("DB_CONN", $database->connect());
@@ -39,8 +41,21 @@ $router->add("{$root_path}/api/quotes/", 'GET', function($params) {
     echo $quote_return;
 });
 
-$router->add('/users/{id}', 'GET', function($params) {
-    echo "User ID: " . $params['id'];
+$router->add('{$root_path}/api/authors', 'GET', function($params) {
+    $model = new Author(DB_CONN);
+    $author_cont = new AuthorController($model);
+    $author_return = null;
+
+    $author_id = $params['id'];
+    $random = $params['random'] === 'true' ? true : false;
+
+    if ($author_id) {
+        $author_return = $author_cont->read_one($author_id, $random);
+    } else {
+        $author_return = $author_cont->read_all($random);
+    }
+
+    echo $author_return;
 });
 
 $router->run();
