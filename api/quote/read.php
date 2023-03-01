@@ -1,10 +1,7 @@
 <?php
-    // Headers
-    header('Acces-Control-Allow-Origin: *');
-    header('Content-Type: application/json');
 
+function read_all($db) {
     try {
-        include_once '../../config/Database.php';
         include_once '../../models/Quote.php';
 
         $database = new Database();
@@ -34,12 +31,13 @@
                 array_push($quote_arr['data'], $quote_item);
             }
 
-            echo json_encode($quote_arr);
+            return json_encode($quote_arr);
         } else {
-            echo json_encode(
+            return json_encode(
                 array('message' => 'No Data Found.')
             );
         }
     } catch (Throwable $e) {
-        echo 'Error in quote read! ' . $e->getMessage();
+        echo 'Error in quote read all! ' . $e->getMessage();
     }
+}

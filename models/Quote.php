@@ -36,4 +36,26 @@
                 echo 'Caught exception: ',  $e->getMessage(), "\n";
             }
         }
+
+        public function read_one($id) {
+            try {
+                $query = "
+                    SELECT q.id, quote, author, category
+                    FROM {$this->table} q
+                    INNER JOIN authors a ON a.id = q.author_id
+                    INNER JOIN categories c ON c.id = q.category_id
+                    WHERE q.id = {$id};
+                ";
+
+                // Prepare statement
+                $stmt = $this->conn->prepare($query);
+
+                // Execute Query
+                $stmt->execute();
+
+                return $stmt;
+            } catch(Throwable $e) {
+                echo 'Caught exception: ',  $e->getMessage(), "\n";
+            }
+        }
     }
