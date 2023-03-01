@@ -9,7 +9,7 @@ class QuoteController {
         $this->model = $model;
     }
 
-    private function create_return_arr($result, $count) {
+    private function create_return_arr($result, $count, $random) {
         $quote_arr = array();
         $quote_arr['data_count'] = $count;
         $quote_arr['data'] = array();
@@ -28,10 +28,16 @@ class QuoteController {
             array_push($quote_arr['data'], $quote_item);
         }
 
+        if ($random) {
+            $randIdx = array_rand($quote_arr['data']);
+            $quote_arr['data'] = array($quote_arr['data'][$randIdx]);
+            $quote_arr['data_count'] = count($quote_arr['data']);
+        }
+
         return json_encode($quote_arr);
     }
 
-    public function read_all() {
+    public function read_all($random) {
         try {
             $quote = $this->model;
     
@@ -40,7 +46,7 @@ class QuoteController {
             $num = $result->rowCount();
     
             if ($num > 0) {
-                return $this->create_return_arr($result, $num);
+                return $this->create_return_arr($result, $num, $random);
             } else {
                 return json_encode(
                     array('message' => 'No Quotes Found.')
@@ -51,7 +57,7 @@ class QuoteController {
         }
     }
 
-    public function read_one($id) {
+    public function read_one($id, $random) {
         try {
             $quote = $this->model;
     
@@ -60,7 +66,7 @@ class QuoteController {
             $num = $result->rowCount();
     
             if ($num > 0) {
-                return $this->create_return_arr($result, $num);
+                return $this->create_return_arr($result, $num, $random);
             } else {
                 return json_encode(
                     array('message' => 'No Quotes Found.')
@@ -71,7 +77,7 @@ class QuoteController {
         }
     }
 
-    public function read_all_from_author($author_id) {
+    public function read_all_from_author($author_id, $random) {
         try {
             $quote = $this->model;
     
@@ -80,7 +86,7 @@ class QuoteController {
             $num = $result->rowCount();
     
             if ($num > 0) {
-                return $this->create_return_arr($result, $num);
+                return $this->create_return_arr($result, $num, $random);
             } else {
                 return json_encode(
                     array('message' => 'No Quotes Found.')
@@ -91,7 +97,7 @@ class QuoteController {
         }
     }
 
-    public function read_all_from_author_with_category($author_id, $category_id) {
+    public function read_all_from_author_with_category($author_id, $category_id, $random) {
         try {
             $quote = $this->model;
     
@@ -100,7 +106,7 @@ class QuoteController {
             $num = $result->rowCount();
     
             if ($num > 0) {
-                return $this->create_return_arr($result, $num);
+                return $this->create_return_arr($result, $num, $random);
             } else {
                 return json_encode(
                     array('message' => 'No Quotes Found.')

@@ -24,15 +24,16 @@ $router->add("{$root_path}/api/quotes/", 'GET', function($params) {
     $quote_id = $params['id'];
     $author_id = $params['authorId'];
     $category_id = $params['categoryId'];
+    $random = $params['random'] === 'true' ? true : false;
 
     if ($category_id && $author_id) {
-        $quote_return = $quote_cont->read_all_from_author_with_category($author_id, $category_id);
+        $quote_return = $quote_cont->read_all_from_author_with_category($author_id, $category_id, $random);
     } else if ($author_id) {
-        $quote_return = $quote_cont->read_all_from_author($author_id);
+        $quote_return = $quote_cont->read_all_from_author($author_id, $random);
     } else if ($quote_id) {
-        $quote_return = $quote_cont->read_one($quote_id);
+        $quote_return = $quote_cont->read_one($quote_id, $random);
     } else {
-        $quote_return = $quote_cont->read_all();
+        $quote_return = $quote_cont->read_all($random);
     }
 
     echo $quote_return;
