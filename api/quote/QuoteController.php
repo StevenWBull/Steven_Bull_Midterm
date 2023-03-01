@@ -113,7 +113,7 @@ class QuoteController {
                 );
             }
         } catch (Throwable $e) {
-            return 'Error in QuoteController->read_all_from_author: ' . $e->getMessage();
+            return 'Error in QuoteController->read_all_from_author_with_category: ' . $e->getMessage();
         }
     }
 }
