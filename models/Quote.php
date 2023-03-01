@@ -1,15 +1,14 @@
 <?php 
-    class Band {
+    class Quote {
         // Connect to DB
         private $conn;
-        private $table = 'bands';
+        private $table = 'quotes';
 
         // Table columns
         public $id;
-        public $created_at;
-        public $name;
-        public $founding_year;
-        public $genre_name;
+        public $quote;
+        public $author;
+        public $category;
 
         // Constructor
         public function __construct($db) {
@@ -17,12 +16,13 @@
         }
 
         // Get
-        public function read() {
+        public function read_all() {
             try {
                 $query = "
-                    SELECT b.id, created_at, name, founding_year, genre_name
-                    FROM {$this->table} b
-                    INNER JOIN genres g ON genre_id = g.id;
+                    SELECT q.id, quote, author, category
+                    FROM {$this->table} q
+                    INNER JOIN authors a ON a.id = q.author_id
+                    INNER JOIN categories c ON c.id = q.category_id;
                 ";
 
                 // Prepare statement

@@ -5,42 +5,41 @@
 
     try {
         include_once '../../config/Database.php';
-        include_once '../../models/Band.php';
+        include_once '../../models/Quote.php';
 
         $database = new Database();
         $db = $database->connect();
 
-        $band = new Band($db);
+        $quote = new Quote($db);
 
-        $result = $band->read();
+        $result = $quote->read_all();
 
         $num = $result->rowCount();
 
         if ($num > 0) {
-            $band_arr = array();
-            $band_arr['data'] = array();
+            $quote_arr = array();
+            $quote_arr['data'] = array();
 
             while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
                 // unpack $row into corresponding variables
                 extract($row);
 
-                $band_item = array(
+                $quote_item = array(
                     'id' => $id,
-                    'created_at' => $created_at,
-                    'name' => $name,
-                    'founding_year' => $founding_year,
-                    'genre_name' => $genre_name
+                    'quote' => $quote,
+                    'author' => $author,
+                    'category' => $category
                 );
 
-                array_push($band_arr['data'], $band_item);
+                array_push($quote_arr['data'], $quote_item);
             }
 
-            echo json_encode($band_arr);
+            echo json_encode($quote_arr);
         } else {
             echo json_encode(
                 array('message' => 'No Data Found.')
             );
         }
     } catch (Throwable $e) {
-        echo 'Error in band read! ' . $e->getMessage();
+        echo 'Error in quote read! ' . $e->getMessage();
     }
