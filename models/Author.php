@@ -14,7 +14,7 @@
         public function __construct($db) {
             $this->conn = $db;
             $this->select_stmt = "
-                SELECT id, autho
+                SELECT id, author
                 FROM {$this->table} a
             ";
         }
