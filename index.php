@@ -14,13 +14,12 @@ require_once './api/quote/QuoteController.php';
 require_once './api/author/AuthorController.php';
 require_once './api/category/CategoryController.php';
 
-$database = new Database();
-define("DB_CONN", $database->connect());
+define("DATABASE", new Database());
+define("DB_CONN", DATABASE->connect());
+define("ROUTER", new Router());
+define("ROOT_PATH", getenv('ROOT_PATH'));
 
-$router = new Router();
-$root_path = getenv('ROOT_PATH');
-
-$router->add("{$root_path}/api/quotes/", 'GET', function($params) {
+ROUTER->add("{ROOT_PATH}/api/quotes/", 'GET', function($params) {
     $model = new Quote(DB_CONN);
     $quote_cont = new QuoteController($model);
     $quote_return = null;
@@ -30,20 +29,19 @@ $router->add("{$root_path}/api/quotes/", 'GET', function($params) {
     $category_id = $params['categoryId'];
     $random = $params['random'] === 'true' ? true : false;
 
-    if ($category_id && $author_id) {
+    if ($category_id && $author_id)
         $quote_return = $quote_cont->read_all_from_author_with_category($author_id, $category_id, $random);
-    } else if ($author_id) {
+    else if ($author_id)
         $quote_return = $quote_cont->read_all_from_author($author_id, $random);
-    } else if ($quote_id) {
+    else if ($quote_id)
         $quote_return = $quote_cont->read_one($quote_id, $random);
-    } else {
+    else
         $quote_return = $quote_cont->read_all($random);
-    }
 
     echo $quote_return;
 });
 
-$router->add('{$root_path}/api/authors', 'GET', function($params) {
+ROUTER->add('{ROOT_PATH}/api/authors', 'GET', function($params) {
     $model = new Author(DB_CONN);
     $author_cont = new AuthorController($model);
     $author_return = null;
@@ -51,16 +49,15 @@ $router->add('{$root_path}/api/authors', 'GET', function($params) {
     $author_id = $params['id'];
     $random = $params['random'] === 'true' ? true : false;
 
-    if ($author_id) {
+    if ($author_id)
         $author_return = $author_cont->read_one($author_id, $random);
-    } else {
+    else
         $author_return = $author_cont->read_all($random);
-    }
 
     echo $author_return;
 });
 
-$router->add('{$root_path}/api/categories', 'GET', function($params) {
+ROUTER->add('{ROOT_PATH}/api/categories', 'GET', function($params) {
     $model = new Category(DB_CONN);
     $category_cont = new CategoryController($model);
     $category_return = null;
@@ -68,13 +65,12 @@ $router->add('{$root_path}/api/categories', 'GET', function($params) {
     $author_id = $params['id'];
     $random = $params['random'] === 'true' ? true : false;
 
-    if ($author_id) {
+    if ($author_id)
         $category_return = $category_cont->read_one($author_id, $random);
-    } else {
+    else
         $category_return = $category_cont->read_all($random);
-    }
 
     echo $category_return;
 });
 
-$router->run();
+ROUTER->run();
