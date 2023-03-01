@@ -8,9 +8,11 @@ require_once './config/Database.php';
 
 require_once './models/Quote.php';
 require_once './models/Author.php';
+require_once './models/Category.php';
 
 require_once './api/quote/QuoteController.php';
 require_once './api/author/AuthorController.php';
+require_once './api/category/CategoryController.php';
 
 $database = new Database();
 define("DB_CONN", $database->connect());
@@ -56,6 +58,23 @@ $router->add('{$root_path}/api/authors', 'GET', function($params) {
     }
 
     echo $author_return;
+});
+
+$router->add('{$root_path}/api/categories', 'GET', function($params) {
+    $model = new Category(DB_CONN);
+    $category_cont = new CategoryController($model);
+    $category_return = null;
+
+    $author_id = $params['id'];
+    $random = $params['random'] === 'true' ? true : false;
+
+    if ($author_id) {
+        $category_return = $category_cont->read_one($author_id, $random);
+    } else {
+        $category_return = $category_cont->read_all($random);
+    }
+
+    echo $category_return;
 });
 
 $router->run();
