@@ -16,13 +16,13 @@ class AuthorController {
 
     private function fatal_error($fn, $msg) {
         $class_name = debug_backtrace()[1]['class'];
-        if (getenv('APP_ENV') === 'prod')
-            return; // Would send to the used logger here like Datadog
-        else
+        // if (getenv('APP_ENV') === 'prod')
+        //     return; // Would send to the used logger here like Datadog
+        // else
             return "Error in {$class_name}->{$fn}: {$msg}";
     }
 
-    private function create_return_arr($result, $count, $random) {
+    private function create_return_arr($result, $count, $random = 0) {
         $author_arr = array();
         $author_arr['data_count'] = $count;
         $author_arr['data'] = array();
@@ -31,12 +31,12 @@ class AuthorController {
             // unpack $row into corresponding variables
             extract($row);
 
-            $quote_item = array(
+            $author_item = array(
                 'id' => $id,
                 'author' => $author
             );
 
-            array_push($author_arr['data'], $quote_item);
+            array_push($author_arr['data'], $author_item);
         }
 
         if ($random) {
@@ -50,9 +50,9 @@ class AuthorController {
 
     public function read_all($random) {
         try {
-            $quote = $this->model;
+            $author = $this->model;
     
-            $result = $quote->read_all();
+            $result = $author->read_all();
     
             $num = $result->rowCount();
     
@@ -67,9 +67,9 @@ class AuthorController {
 
     public function read_one($author_id, $random) {
         try {
-            $quote = $this->model;
+            $author = $this->model;
     
-            $result = $quote->read_one($author_id);
+            $result = $author->read_one($author_id);
     
             $num = $result->rowCount();
     
@@ -77,6 +77,25 @@ class AuthorController {
                 return $this->create_return_arr($result, $num, $random);
             else
                 return $this->no_data_found();
+        } catch (Throwable $e) {
+            return $this->fatal_error(__FUNCTION__, $e->getMessage());
+        }
+    }
+
+    public function create($author) {
+        try {
+            $author_model = $this->model;
+    
+            $result = $author_model->create($author);
+        
+            if ($result instanceof PDOStatement) {
+                header('HTTP/1.1 201 Created');
+                $num = $result->rowCount();
+                return $this->create_return_arr($result, $num);
+            } else {
+                header('HTTP/1.1 409 Conflict');
+                return json_encode($result);
+            }
         } catch (Throwable $e) {
             return $this->fatal_error(__FUNCTION__, $e->getMessage());
         }

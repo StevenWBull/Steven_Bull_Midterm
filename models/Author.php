@@ -50,12 +50,49 @@
 
         public function read_one($author_id) {
             try {
-                $query = $this->select_stmt . "WHERE id = {$author_id};";
+                $query = $this->select_stmt . "WHERE id = :author_id;";
 
                 // Prepare statement
                 $stmt = $this->conn->prepare($query);
+                $stmt->bindParam(':author_id', $author_id);
 
                 // Execute Query
+                $stmt->execute();
+
+                return $stmt;
+            } catch(Throwable $e) {
+                $msg = $e->getMessage();
+                $this->fatal_error($msg);
+            }
+        }
+
+        public function create($author) {
+            try {
+                $check_query = "
+                    SELECT COUNT(*)
+                    FROM authors
+                    WHERE LOWER(author) = LOWER(:author);
+                ";
+                $check_stmt = $this->conn->prepare($check_query);
+                $check_stmt->bindParam(':author', $author);
+
+                $check_stmt->execute();
+
+                $row_count = $check_stmt->fetchColumn();
+
+                if ($row_count > 0) {
+                    return array('message' => 'Author already exists');
+                }
+
+                $query = "
+                    INSERT INTO {$this->table} (author)
+                    VALUES (:author)
+                    RETURNING id, author;
+                ";
+
+                $stmt = $this->conn->prepare($query);
+                $stmt->bindParam(':author', $author);
+
                 $stmt->execute();
 
                 return $stmt;

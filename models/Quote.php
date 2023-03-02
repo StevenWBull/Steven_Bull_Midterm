@@ -54,10 +54,11 @@
 
         public function read_one($id) {
             try {
-                $query = $this->select_stmt . "WHERE q.id = {$id};";
+                $query = $this->select_stmt . "WHERE q.id = :id;";
 
                 // Prepare statement
                 $stmt = $this->conn->prepare($query);
+                $stmt->bindParam(':id', $id);
 
                 // Execute Query
                 $stmt->execute();
@@ -71,10 +72,11 @@
 
         public function read_all_from_author($author_id) {
             try {
-                $query = $this->select_stmt . "WHERE author_id = {$author_id};";
+                $query = $this->select_stmt . "WHERE author_id = :author_id;";
 
                 // Prepare statement
                 $stmt = $this->conn->prepare($query);
+                $stmt->bindParam(':author_id', $author_id);
 
                 // Execute Query
                 $stmt->execute();
@@ -89,12 +91,14 @@
         public function read_all_from_author_with_category($author_id, $category_id) {
             try {
                 $query = $this->select_stmt . "
-                    WHERE author_id = {$author_id}
-                    AND category_id = {$category_id};
+                    WHERE author_id = :author_id
+                    AND category_id = :category_id;
                 ";
 
                 // Prepare statement
                 $stmt = $this->conn->prepare($query);
+                $stmt->bindParam(':author_id', $author_id);
+                $stmt->bindParam(':category_id', $category_id);
 
                 // Execute Query
                 $stmt->execute();

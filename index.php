@@ -21,8 +21,8 @@ define("ROOT_PATH", getenv('ROOT_PATH'));
 
 ROUTER->add("{ROOT_PATH}/api/quotes/", 'GET', function($params) {
     $model = new Quote(DB_CONN);
-    $quote_cont = new QuoteController($model);
-    $quote_return = null;
+    $controller = new QuoteController($model);
+    $return_stmt = null;
 
     $quote_id = $params['id'];
     $author_id = $params['authorId'];
@@ -30,47 +30,66 @@ ROUTER->add("{ROOT_PATH}/api/quotes/", 'GET', function($params) {
     $random = $params['random'] === 'true' ? true : false;
 
     if ($category_id && $author_id)
-        $quote_return = $quote_cont->read_all_from_author_with_category($author_id, $category_id, $random);
+        $return_stmt = $controller->read_all_from_author_with_category($author_id, $category_id, $random);
     else if ($author_id)
-        $quote_return = $quote_cont->read_all_from_author($author_id, $random);
+        $return_stmt = $controller->read_all_from_author($author_id, $random);
     else if ($quote_id)
-        $quote_return = $quote_cont->read_one($quote_id, $random);
+        $return_stmt = $controller->read_one($quote_id, $random);
     else
-        $quote_return = $quote_cont->read_all($random);
+        $return_stmt = $controller->read_all($random);
 
-    echo $quote_return;
+    echo $return_stmt;
 });
 
 ROUTER->add('{ROOT_PATH}/api/authors', 'GET', function($params) {
     $model = new Author(DB_CONN);
-    $author_cont = new AuthorController($model);
-    $author_return = null;
+    $controller = new AuthorController($model);
+    $return_stmt = null;
 
     $author_id = $params['id'];
     $random = $params['random'] === 'true' ? true : false;
 
     if ($author_id)
-        $author_return = $author_cont->read_one($author_id, $random);
+        $return_stmt = $controller->read_one($author_id, $random);
     else
-        $author_return = $author_cont->read_all($random);
+        $return_stmt = $controller->read_all($random);
 
-    echo $author_return;
+    echo $return_stmt;
 });
 
 ROUTER->add('{ROOT_PATH}/api/categories', 'GET', function($params) {
     $model = new Category(DB_CONN);
-    $category_cont = new CategoryController($model);
-    $category_return = null;
+    $controller = new CategoryController($model);
+    $return_stmt = null;
 
     $author_id = $params['id'];
     $random = $params['random'] === 'true' ? true : false;
 
     if ($author_id)
-        $category_return = $category_cont->read_one($author_id, $random);
+        $return_stmt = $controller->read_one($author_id, $random);
     else
-        $category_return = $category_cont->read_all($random);
+        $return_stmt = $controller->read_all($random);
 
-    echo $category_return;
+    echo $return_stmt;
+});
+
+ROUTER->add("{ROOT_PATH}/api/authors/", 'POST', function($post_data) {
+    $model = new Author(DB_CONN);
+    $controller = new AuthorController($model);
+    $return_stmt = null;
+
+    $author = $post_data['author'];
+
+    if (!$author) {
+        header('HTTP/1.1 400 Bad Request');
+        echo json_encode(
+            array('message' => "'author' Field Required.")
+        );
+    }
+
+    $return_stmt = $controller->create($author);
+
+    echo $return_stmt;
 });
 
 ROUTER->run();
