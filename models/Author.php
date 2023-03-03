@@ -68,21 +68,22 @@
 
         public function create($author) {
             try {
-                $check_query = "
-                    SELECT COUNT(*)
-                    FROM authors
-                    WHERE LOWER(author) = LOWER(:author);
-                ";
-                $check_stmt = $this->conn->prepare($check_query);
-                $check_stmt->bindParam(':author', $author);
+                // Use this to prevent duplication
+                // $check_query = "
+                //     SELECT COUNT(*)
+                //     FROM {$this->table}
+                //     WHERE LOWER(author) = LOWER(:author);
+                // ";
+                // $check_stmt = $this->conn->prepare($check_query);
+                // $check_stmt->bindParam(':author', $author);
 
-                $check_stmt->execute();
+                // $check_stmt->execute();
 
-                $row_count = $check_stmt->fetchColumn();
+                // $row_count = $check_stmt->fetchColumn();
 
-                if ($row_count > 0) {
-                    return array('message' => 'Author already exists');
-                }
+                // if ($row_count > 0) {
+                //     return array('message' => 'Author already exists');
+                // }
 
                 $query = "
                     INSERT INTO {$this->table} (author)

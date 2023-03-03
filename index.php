@@ -92,4 +92,23 @@ ROUTER->add("{ROOT_PATH}/api/authors/", 'POST', function($post_data) {
     echo $return_stmt;
 });
 
+ROUTER->add("{ROOT_PATH}/api/categories/", 'POST', function($post_data) {
+    $model = new Category(DB_CONN);
+    $controller = new CategoryController($model);
+    $return_stmt = null;
+
+    $category = $post_data['category'];
+
+    if (!$category) {
+        header('HTTP/1.1 400 Bad Request');
+        echo json_encode(
+            array('message' => "'category' Field Required.")
+        );
+    }
+
+    $return_stmt = $controller->create($category);
+
+    echo $return_stmt;
+});
+
 ROUTER->run();
