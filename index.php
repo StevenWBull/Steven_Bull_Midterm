@@ -85,6 +85,7 @@ ROUTER->add("{ROOT_PATH}/api/authors/", 'POST', function($post_data) {
         echo json_encode(
             array('message' => "'author' Field Required.")
         );
+        return;
     }
 
     $return_stmt = $controller->create($author);
@@ -104,9 +105,32 @@ ROUTER->add("{ROOT_PATH}/api/categories/", 'POST', function($post_data) {
         echo json_encode(
             array('message' => "'category' Field Required.")
         );
+        return;
     }
 
     $return_stmt = $controller->create($category);
+
+    echo $return_stmt;
+});
+
+ROUTER->add("{ROOT_PATH}/api/quotes/", 'POST', function($post_data) {
+    $model = new Quote(DB_CONN);
+    $controller = new QuoteController($model);
+    $return_stmt = null;
+
+    $quote = $post_data['quote'];
+    $author_id = $post_data['author_id'];
+    $category_id = $post_data['category_id'];
+
+    if (!$quote || !$category_id || !$author_id) {
+        header('HTTP/1.1 400 Bad Request');
+        echo json_encode(
+            array('message' => "Missing Required Parameters")
+        );
+        return;
+    }
+
+    $return_stmt = $controller->create($quote, $author_id, $category_id);
 
     echo $return_stmt;
 });

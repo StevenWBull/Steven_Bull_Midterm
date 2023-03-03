@@ -24,7 +24,7 @@ class QuoteController {
             return "Error in {$class_name}->{$fn}: {$msg}";
     }
 
-    private function create_return_arr($result, $count, $random) {
+    private function create_return_arr($result, $count, $random = 0) {
         $quote_arr = array();
         $quote_arr['data_count'] = $count;
         $quote_arr['data'] = array();
@@ -115,6 +115,25 @@ class QuoteController {
                 return $this->create_return_arr($result, $num, $random);
             else
                 return $this->no_data_found();
+        } catch (Throwable $e) {
+            return $this->fatal_error(__FUNCTION__, $e->getMessage());
+        }
+    }
+
+    public function create($quote, $author_id, $category_id) {
+        try {
+            $model = $this->model;
+    
+            $result = $model->create($quote, $author_id, $category_id);
+        
+            if ($result instanceof PDOStatement) {
+                header('HTTP/1.1 201 Created');
+                $num = $result->rowCount();
+                return $this->create_return_arr($result, $num);
+            } else {
+                header('HTTP/1.1 404 Not Found');
+                return json_encode($result);
+            }
         } catch (Throwable $e) {
             return $this->fatal_error(__FUNCTION__, $e->getMessage());
         }

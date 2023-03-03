@@ -109,4 +109,34 @@
                 $this->fatal_error($msg);
             }
         }
+
+        public function create($quote, $author_id, $category_id) {
+            try {
+                $query = "
+                    INSERT INTO {$this->table} (quote, author_id, category_id)
+                    VALUES (:quote, :author_id, :category_id)
+                    RETURNING id;
+                ";
+
+                $stmt = $this->conn->prepare($query);
+                $stmt->bindParam(':quote', $quote);
+                $stmt->bindParam(':author_id', $author_id);
+                $stmt->bindParam(':category_id', $category_id);
+
+                try {
+                    $stmt->execute();
+                } catch (PDOException $e) {
+                    if ($e->getCode() == '23503') { // 23503 is the SQL state for foreign key violation
+                        preg_match("/Key \((.*)\)=\((.*)\)/", $e->getMessage(), $matches);
+                        $constraint = $matches[1]; // the name of the violated foreign key constraint\
+                        return array('message' => "$constraint Not Found");
+                    }
+                }
+
+                return $this->read_one($stmt->fetchColumn());
+            } catch(Throwable $e) {
+                $msg = $e->getMessage();
+                $this->fatal_error($msg);
+            }
+        }
     }

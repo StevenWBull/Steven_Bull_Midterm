@@ -1,0 +1,103 @@
+<?php
+
+class CategoryController {
+    private $model = null;
+
+    public function __construct($model) {
+        $this->model = $model;
+    }
+
+    private function no_data_found() {
+        header('HTTP/1.1 404 Not Found');
+        return json_encode(
+            array('message' => 'category_id Not Found.')
+        ); 
+    }
+
+    private function fatal_error($fn, $msg) {
+        $class_name = debug_backtrace()[1]['class'];
+        if (getenv('APP_ENV') === 'prod')
+            return; // Would send to the used logger here like Datadog
+        else
+            return "Error in {$class_name}->{$fn}: {$msg}";
+    }
+
+    private function create_return_arr($result, $count, $random = 0) {
+        $category_arr = array();
+        $category_arr['data_count'] = $count;
+        $category_arr['data'] = array();
+
+        while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+            // unpack $row into corresponding variables
+            extract($row);
+
+            $category_item = array(
+                'id' => $id,
+                'category' => $category
+            );
+
+            array_push($category_arr['data'], $category_item);
+        }
+
+        if ($random) {
+            $randIdx = array_rand($category_arr['data']);
+            $category_arr['data'] = array($category_arr['data'][$randIdx]);
+            $category_arr['data_count'] = count($category_arr['data']);
+        }
+
+        return json_encode($category_arr);
+    }
+
+    public function read_all($random) {
+        try {
+            $category = $this->model;
+    
+            $result = $category->read_all();
+    
+            $num = $result->rowCount();
+    
+            if ($num > 0)
+                return $this->create_return_arr($result, $num, $random);
+            else 
+                return $this->no_data_found();
+        } catch (Throwable $e) {
+            return $this->fatal_error(__FUNCTION__, $e->getMessage());
+        }
+    }
+
+    public function read_one($category_id, $random) {
+        try {
+            $category = $this->model;
+    
+            $result = $category->read_one($category_id);
+    
+            $num = $result->rowCount();
+    
+            if ($num > 0)
+                return $this->create_return_arr($result, $num, $random);
+            else
+                return $this->no_data_found();
+        } catch (Throwable $e) {
+            return $this->fatal_error(__FUNCTION__, $e->getMessage());
+        }
+    }
+
+    public function create($category) {
+        try {
+            $category_model = $this->model;
+    
+            $result = $category_model->create($category);
+        
+            if ($result instanceof PDOStatement) {
+                header('HTTP/1.1 201 Created');
+                $num = $result->rowCount();
+                return $this->create_return_arr($result, $num);
+            } else {
+                header('HTTP/1.1 409 Conflict');
+                return json_encode($result);
+            }
+        } catch (Throwable $e) {
+            return $this->fatal_error(__FUNCTION__, $e->getMessage());
+        }
+    }
+}
