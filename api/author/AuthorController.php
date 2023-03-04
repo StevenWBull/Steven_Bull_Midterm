@@ -9,7 +9,7 @@ class AuthorController {
 
     private function no_data_found() {
         return json_encode(
-            array('message' => 'author_id Not Found.')
+            array('message' => 'author_id Not Found')
         ); 
     }
 
