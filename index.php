@@ -20,6 +20,10 @@ define("ROUTER", new Router());
 define("ROOT_PATH", getenv('ROOT_PATH'));
 
 // GET REQUESTS
+ROUTER->add("/", 'GET', function($params) {
+    echo "Hello, world!";
+});
+
 ROUTER->add("/api/quotes", 'GET', function($params) {
     $model = new Quote(DB_CONN);
     $controller = new QuoteController($model);
