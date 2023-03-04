@@ -3,7 +3,6 @@
 header('Acces-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
 header('Content-Type: application/json');
-header('Access-Control-Allow-Headers: Origin, Accept, Content-Type, X-Requested-With');
 
 require_once 'Router.php';
 require_once './config/Database.php';
