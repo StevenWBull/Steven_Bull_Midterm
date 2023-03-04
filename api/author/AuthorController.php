@@ -44,7 +44,10 @@ class AuthorController {
             $author_arr['data_count'] = count($author_arr['data']);
         }
 
-        return json_encode($author_arr['data']);
+        if (count($author_arr['data']) > 1) 
+            return json_encode($author_arr['data']);
+        else
+            return json_encode($author_arr['data'][0]);
     }
 
     public function read_all($random) {

@@ -48,7 +48,10 @@ class QuoteController {
             $quote_arr['data_count'] = count($quote_arr['data']);
         }
 
-        return json_encode($quote_arr['data']);
+        if (count($quote_arr['data']) > 1) 
+            return json_encode($quote_arr['data']);
+        else
+            return json_encode($quote_arr['data'][0]);
     }
 
     public function read_all($random) {
