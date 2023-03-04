@@ -2,6 +2,7 @@
 
 header('Acces-Control-Allow-Origin: *');
 header("Access-Control-Allow-Headers: *");
+header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
 header('Content-Type: application/json');
 
 require_once 'Router.php';
