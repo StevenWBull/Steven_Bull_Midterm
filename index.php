@@ -24,7 +24,7 @@ ROUTER->add("/", 'GET', function($params) {
     echo "Hello, world!";
 });
 
-ROUTER->add("/api/quotes", 'GET', function($params) {
+ROUTER->add("{ROOT_PATH}/api/quotes", 'GET', function($params) {
     $model = new Quote(DB_CONN);
     $controller = new QuoteController($model);
     $return_stmt = null;

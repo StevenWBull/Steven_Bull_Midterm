@@ -26,6 +26,8 @@ class Router {
     public function run() {
         $uri = trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
         $method = $_SERVER['REQUEST_METHOD'];
+
+        echo $_SERVER['REQUEST_URI'] . "\n";
     
         $route_found = false;
     
