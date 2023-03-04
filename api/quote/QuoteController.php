@@ -138,4 +138,25 @@ class QuoteController {
             return $this->fatal_error(__FUNCTION__, $e->getMessage());
         }
     }
+
+    public function update($quote_id, $quote, $author_id, $category_id) {
+        try {
+            $category_model = $this->model;
+    
+            $result = $category_model->update($quote_id, $quote, $author_id, $category_id);
+            
+
+            if ($result instanceof PDOStatement && $result->rowCount()) {
+                $num = $result->rowCount();
+                return $this->create_return_arr($result, $num);
+            } else {
+                header('HTTP/1.1 404 Not Found');
+                return json_encode(array(
+                    'message' => "No Quotes Found"
+                ));
+            }
+        } catch (Throwable $e) {
+            return $this->fatal_error(__FUNCTION__, $e->getMessage());
+        }
+    }
 }

@@ -102,4 +102,26 @@
                 $this->fatal_error($msg);
             }
         }
+
+        public function update($author_id, $author) {
+            try {
+                $query = "
+                    UPDATE {$this->table}
+                    SET author = :author
+                    WHERE id = :id
+                    RETURNING id, author;
+                ";
+
+                $stmt = $this->conn->prepare($query);
+                $stmt->bindParam(':id', $author_id);
+                $stmt->bindParam(':author', $author);
+
+                $stmt->execute();
+
+                return $stmt;
+            } catch(Throwable $e) {
+                $msg = $e->getMessage();
+                $this->fatal_error($msg);
+            }
+        }
     }

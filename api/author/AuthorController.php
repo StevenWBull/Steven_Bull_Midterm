@@ -100,4 +100,24 @@ class AuthorController {
             return $this->fatal_error(__FUNCTION__, $e->getMessage());
         }
     }
+
+    public function update($author_id, $author) {
+        try {
+            $author_model = $this->model;
+    
+            $result = $author_model->update($author_id, $author);
+            $num = $result->rowCount();
+
+            if ($num) {
+                return $this->create_return_arr($result, $num);
+            } else {
+                header('HTTP/1.1 404 Not Found');
+                return json_encode(array(
+                    'message' => "author_id Not Found"
+                ));
+            }
+        } catch (Throwable $e) {
+            return $this->fatal_error(__FUNCTION__, $e->getMessage());
+        }
+    }
 }

@@ -119,7 +119,7 @@
                 ";
 
                 $stmt = $this->conn->prepare($query);
-                $stmt->bindParam(':quote', $quote);
+                $stmt->bindParam(':quote', html_entity_decode($quote));
                 $stmt->bindParam(':author_id', $author_id);
                 $stmt->bindParam(':category_id', $category_id);
 
@@ -131,6 +131,36 @@
                         $constraint = $matches[1]; // the name of the violated foreign key constraint\
                         return array('message' => "$constraint Not Found");
                     }
+                }
+
+                return $this->read_one($stmt->fetchColumn());
+            } catch(Throwable $e) {
+                $msg = $e->getMessage();
+                $this->fatal_error($msg);
+            }
+        }
+
+        public function update($quote_id, $quote, $author_id, $category_id) {
+            try {
+                $query = "
+                    UPDATE {$this->table}
+                    SET quote = :quote,
+                        author_id = :author_id,
+                        category_id = :category_id
+                    WHERE id = :quote_id
+                    RETURNING id;
+                ";
+
+                $stmt = $this->conn->prepare($query);
+                $stmt->bindParam(':quote_id', $quote_id);
+                $stmt->bindParam(':quote', html_entity_decode($quote));
+                $stmt->bindParam(':author_id', $author_id);
+                $stmt->bindParam(':category_id', $category_id);
+
+                try {
+                    $stmt->execute();
+                } catch (PDOException $e) {
+                    return null;
                 }
 
                 return $this->read_one($stmt->fetchColumn());

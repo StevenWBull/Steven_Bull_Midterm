@@ -102,4 +102,26 @@
                 $this->fatal_error($msg);
             }
         }
+
+        public function update($category_id, $category) {
+            try {
+                $query = "
+                    UPDATE {$this->table}
+                    SET category = :category
+                    WHERE id = :id
+                    RETURNING id, category;
+                ";
+
+                $stmt = $this->conn->prepare($query);
+                $stmt->bindParam(':id', $category_id);
+                $stmt->bindParam(':category', $category);
+                
+                $stmt->execute();
+
+                return $stmt;
+            } catch(Throwable $e) {
+                $msg = $e->getMessage();
+                $this->fatal_error($msg);
+            }
+        }
     }

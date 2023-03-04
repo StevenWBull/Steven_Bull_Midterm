@@ -100,4 +100,24 @@ class CategoryController {
             return $this->fatal_error(__FUNCTION__, $e->getMessage());
         }
     }
+
+    public function update($category_id, $category) {
+        try {
+            $category_model = $this->model;
+    
+            $result = $category_model->update($category_id, $category);
+            $num = $result->rowCount();
+
+            if ($num) {
+                return $this->create_return_arr($result, $num);
+            } else {
+                header('HTTP/1.1 404 Not Found');
+                return json_encode(array(
+                    'message' => "category_id Not Found"
+                ));
+            }
+        } catch (Throwable $e) {
+            return $this->fatal_error(__FUNCTION__, $e->getMessage());
+        }
+    }
 }
