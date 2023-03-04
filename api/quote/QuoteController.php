@@ -11,7 +11,7 @@ class QuoteController {
 
     private function no_data_found() {
         return json_encode(
-            array('message' => 'No Quotes Found.')
+            array('message' => 'No Quotes Found')
         ); 
     }
 
