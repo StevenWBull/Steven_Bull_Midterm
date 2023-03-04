@@ -16,9 +16,9 @@ class AuthorController {
 
     private function fatal_error($fn, $msg) {
         $class_name = debug_backtrace()[1]['class'];
-        // if (getenv('APP_ENV') === 'prod')
-        //     return; // Would send to the used logger here like Datadog
-        // else
+        if (getenv('APP_ENV') === 'prod')
+            return; // Would send to the used logger here like Datadog
+        else
             return "Error in {$class_name}->{$fn}: {$msg}";
     }
 
