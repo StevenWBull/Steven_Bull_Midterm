@@ -47,7 +47,7 @@ ROUTER->add(THE_ROOT . "/api/quotes", 'GET', function($params) {
     echo $return_stmt;
 });
 
-ROUTER->add(THE_ROOT . '/api/authors', 'GET', function($params) {
+ROUTER->add(THE_ROOT . "/api/authors", 'GET', function($params) {
     $model = new Author(DB_CONN);
     $controller = new AuthorController($model);
     $return_stmt = null;
@@ -63,7 +63,7 @@ ROUTER->add(THE_ROOT . '/api/authors', 'GET', function($params) {
     echo $return_stmt;
 });
 
-ROUTER->add(THE_ROOT . '/api/categories', 'GET', function($params) {
+ROUTER->add(THE_ROOT . "/api/categories", 'GET', function($params) {
     $model = new Category(DB_CONN);
     $controller = new CategoryController($model);
     $return_stmt = null;
@@ -80,7 +80,7 @@ ROUTER->add(THE_ROOT . '/api/categories', 'GET', function($params) {
 });
 
 // POST REQUESTS
-ROUTER->add(THE_ROOT . "/api/quotes/", 'POST', function($post_data) {
+ROUTER->add(THE_ROOT . "/api/quotes", 'POST', function($post_data) {
     $model = new Quote(DB_CONN);
     $controller = new QuoteController($model);
     $return_stmt = null;
@@ -101,7 +101,7 @@ ROUTER->add(THE_ROOT . "/api/quotes/", 'POST', function($post_data) {
     echo $return_stmt;
 });
 
-ROUTER->add(THE_ROOT . "/api/authors/", 'POST', function($post_data) {
+ROUTER->add(THE_ROOT . "/api/authors", 'POST', function($post_data) {
     $model = new Author(DB_CONN);
     $controller = new AuthorController($model);
     $return_stmt = null;
@@ -120,7 +120,7 @@ ROUTER->add(THE_ROOT . "/api/authors/", 'POST', function($post_data) {
     echo $return_stmt;
 });
 
-ROUTER->add(THE_ROOT . "/api/categories/", 'POST', function($post_data) {
+ROUTER->add(THE_ROOT . "/api/categories", 'POST', function($post_data) {
     $model = new Category(DB_CONN);
     $controller = new CategoryController($model);
     $return_stmt = null;
@@ -140,7 +140,7 @@ ROUTER->add(THE_ROOT . "/api/categories/", 'POST', function($post_data) {
 });
 
 // PUT REQUESTS
-ROUTER->add(THE_ROOT . "/api/quotes/", 'PUT', function($post_data) {
+ROUTER->add(THE_ROOT . "/api/quotes", 'PUT', function($post_data) {
     $model = new Quote(DB_CONN);
     $controller = new QuoteController($model);
     $return_stmt = null;
@@ -162,7 +162,7 @@ ROUTER->add(THE_ROOT . "/api/quotes/", 'PUT', function($post_data) {
     echo $return_stmt;
 });
 
-ROUTER->add(THE_ROOT . "/api/authors/", 'PUT', function($post_data) {
+ROUTER->add(THE_ROOT . "/api/authors", 'PUT', function($post_data) {
     $model = new Author(DB_CONN);
     $controller = new AuthorController($model);
     $return_stmt = null;
@@ -182,7 +182,7 @@ ROUTER->add(THE_ROOT . "/api/authors/", 'PUT', function($post_data) {
     echo $return_stmt;
 });
 
-ROUTER->add(THE_ROOT . "/api/categories/", 'PUT', function($post_data) {
+ROUTER->add(THE_ROOT . "/api/categories", 'PUT', function($post_data) {
     $model = new Category(DB_CONN);
     $controller = new CategoryController($model);
     $return_stmt = null;
@@ -202,7 +202,7 @@ ROUTER->add(THE_ROOT . "/api/categories/", 'PUT', function($post_data) {
     echo $return_stmt;
 });
 
-ROUTER->add(THE_ROOT . "/api/quotes/", 'DELETE', function($post_data) {
+ROUTER->add(THE_ROOT . "/api/quotes", 'DELETE', function($post_data) {
     $model = new Quote(DB_CONN);
     $controller = new QuoteController($model);
     $return_stmt = null;
@@ -221,7 +221,7 @@ ROUTER->add(THE_ROOT . "/api/quotes/", 'DELETE', function($post_data) {
     echo $return_stmt;
 });
 
-ROUTER->add(THE_ROOT . "/api/authors/", 'DELETE', function($post_data) {
+ROUTER->add(THE_ROOT . "/api/authors", 'DELETE', function($post_data) {
     $model = new Author(DB_CONN);
     $controller = new AuthorController($model);
     $return_stmt = null;
@@ -240,7 +240,7 @@ ROUTER->add(THE_ROOT . "/api/authors/", 'DELETE', function($post_data) {
     echo $return_stmt;
 });
 
-ROUTER->add(THE_ROOT . "/api/categories/", 'DELETE', function($post_data) {
+ROUTER->add(THE_ROOT . "/api/categories", 'DELETE', function($post_data) {
     $model = new Category(DB_CONN);
     $controller = new CategoryController($model);
     $return_stmt = null;
