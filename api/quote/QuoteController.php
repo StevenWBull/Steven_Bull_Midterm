@@ -10,7 +10,6 @@ class QuoteController {
     }
 
     private function no_data_found() {
-        header('HTTP/1.1 404 Not Found');
         return json_encode(
             array('message' => 'No Quotes Found.')
         ); 
@@ -131,7 +130,6 @@ class QuoteController {
                 $num = $result->rowCount();
                 return $this->create_return_arr($result, $num);
             } else {
-                header('HTTP/1.1 404 Not Found');
                 return json_encode($result);
             }
         } catch (Throwable $e) {
@@ -150,7 +148,6 @@ class QuoteController {
                 $num = $result->rowCount();
                 return $this->create_return_arr($result, $num);
             } else {
-                header('HTTP/1.1 404 Not Found');
                 return json_encode(array(
                     'message' => "No Quotes Found"
                 ));
@@ -172,13 +169,11 @@ class QuoteController {
                 if ($num)
                     return $this->create_return_arr($result, $num);
                 else {
-                    header('HTTP/1.1 404 Not Found');
                     return json_encode(array(
                         'message' => "quote_id Not Found"
                     ));
                 }
             } else {
-                header('HTTP/1.1 409 Conflict');
                 return json_encode($result);
             }
         } catch (Throwable $e) {

@@ -31,8 +31,8 @@ ROUTER->add(THE_ROOT . "/api/quotes", 'GET', function($params) {
     $return_stmt = null;
 
     $quote_id = $params['id'];
-    $author_id = $params['authorId'];
-    $category_id = $params['categoryId'];
+    $author_id = $params['author_id'];
+    $category_id = $params['category_id'];
     $random = $params['random'] === 'true' ? true : false;
 
     if ($category_id && $author_id)
@@ -90,7 +90,6 @@ ROUTER->add(THE_ROOT . "/api/quotes/", 'POST', function($post_data) {
     $category_id = $post_data['category_id'];
 
     if (!$quote || !$category_id || !$author_id) {
-        header('HTTP/1.1 400 Bad Request');
         echo json_encode(
             array('message' => "Missing Required Parameters")
         );
@@ -110,7 +109,6 @@ ROUTER->add(THE_ROOT . "/api/authors/", 'POST', function($post_data) {
     $author = $post_data['author'];
 
     if (!$author) {
-        header('HTTP/1.1 400 Bad Request');
         echo json_encode(
             array('message' => "Missing Required Parameters")
         );
@@ -130,7 +128,6 @@ ROUTER->add(THE_ROOT . "/api/categories/", 'POST', function($post_data) {
     $category = $post_data['category'];
 
     if (!$category) {
-        header('HTTP/1.1 400 Bad Request');
         echo json_encode(
             array('message' => "Missing Required Parameters")
         );
@@ -154,7 +151,6 @@ ROUTER->add(THE_ROOT . "/api/quotes/", 'PUT', function($post_data) {
     $category_id = $post_data['category_id'];
 
     if (!$quote_id || !$quote || !$category_id || !$author_id) {
-        header('HTTP/1.1 400 Bad Request');
         echo json_encode(
             array('message' => "Missing Required Parameters")
         );
@@ -175,7 +171,6 @@ ROUTER->add(THE_ROOT . "/api/authors/", 'PUT', function($post_data) {
     $author = $post_data['author'];
 
     if (!$author || !$author_id ) {
-        header('HTTP/1.1 400 Bad Request');
         echo json_encode(
             array('message' => "Missing Required Parameters")
         );
@@ -196,7 +191,6 @@ ROUTER->add(THE_ROOT . "/api/categories/", 'PUT', function($post_data) {
     $category = $post_data['category'];
 
     if (!$category || !$category_id) {
-        header('HTTP/1.1 400 Bad Request');
         echo json_encode(
             array('message' => "Missing Required Parameters")
         );
@@ -216,7 +210,6 @@ ROUTER->add(THE_ROOT . "/api/quotes/", 'DELETE', function($post_data) {
     $quote_id = $post_data['quote_id'];
 
     if (!$quote_id ) {
-        header('HTTP/1.1 400 Bad Request');
         echo json_encode(
             array('message' => "Missing Required Parameters")
         );
@@ -236,7 +229,6 @@ ROUTER->add(THE_ROOT . "/api/authors/", 'DELETE', function($post_data) {
     $author_id = $post_data['author_id'];
 
     if (!$author_id ) {
-        header('HTTP/1.1 400 Bad Request');
         echo json_encode(
             array('message' => "Missing Required Parameters")
         );
@@ -256,7 +248,6 @@ ROUTER->add(THE_ROOT . "/api/categories/", 'DELETE', function($post_data) {
     $category_id = $post_data['category_id'];
 
     if (!$category_id ) {
-        header('HTTP/1.1 400 Bad Request');
         echo json_encode(
             array('message' => "Missing Required Parameters")
         );
