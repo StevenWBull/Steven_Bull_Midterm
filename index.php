@@ -145,7 +145,7 @@ ROUTER->add(THE_ROOT . "/api/quotes", 'PUT', function($post_data) {
     $controller = new QuoteController($model);
     $return_stmt = null;
 
-    $quote_id = $post_data['quoteId'];
+    $quote_id = $post_data['id'];
     $quote = $post_data['quote'];
     $author_id = $post_data['author_id'];
     $category_id = $post_data['category_id'];
@@ -167,7 +167,7 @@ ROUTER->add(THE_ROOT . "/api/authors", 'PUT', function($post_data) {
     $controller = new AuthorController($model);
     $return_stmt = null;
 
-    $author_id = $post_data['author_id'];
+    $author_id = $post_data['id'];
     $author = $post_data['author'];
 
     if (!$author || !$author_id ) {
@@ -187,7 +187,7 @@ ROUTER->add(THE_ROOT . "/api/categories", 'PUT', function($post_data) {
     $controller = new CategoryController($model);
     $return_stmt = null;
 
-    $category_id = $post_data['category_id'];
+    $category_id = $post_data['id'];
     $category = $post_data['category'];
 
     if (!$category || !$category_id) {
