@@ -154,13 +154,17 @@ class QuoteController {
     
             $result = $category_model->update($quote_id, $quote, $author_id, $category_id);
             
-            if ($result instanceof PDOStatement && $result->rowCount()) {
-                $num = $result->rowCount();
-                return $this->create_return_arr($result, $num);
+            if ($result instanceof PDOStatement) {
+                if ($result->rowCount()) {
+                    $num = $result->rowCount();
+                    return $this->create_return_arr($result, $num);
+                } else {
+                    return json_encode(array(
+                        'message' => "No Quotes Found"
+                    ));
+                }
             } else {
-                return json_encode(array(
-                    'message' => "No Quotes Found"
-                ));
+                return json_encode($result);
             }
         } catch (Throwable $e) {
             return $this->fatal_error(__FUNCTION__, $e->getMessage());

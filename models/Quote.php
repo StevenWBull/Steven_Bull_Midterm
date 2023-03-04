@@ -162,7 +162,11 @@
                 try {
                     $stmt->execute();
                 } catch (PDOException $e) {
-                    return null;
+                    if ($e->getCode() == '23503') { // 23503 is the SQL state for foreign key violation
+                        preg_match("/Key \((.*)\)=\((.*)\)/", $e->getMessage(), $matches);
+                        $constraint = $matches[1]; // the name of the violated foreign key constraint\
+                        return array('message' => "$constraint Not Found");
+                    }
                 }
 
                 return $stmt;
