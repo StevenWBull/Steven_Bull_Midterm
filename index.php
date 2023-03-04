@@ -20,7 +20,7 @@ define("ROUTER", new Router());
 define("ROOT_PATH", getenv('ROOT_PATH'));
 
 // GET REQUESTS
-ROUTER->add("{ROOT_PATH}/api/quotes", 'GET', function($params) {
+ROUTER->add("/api/quotes", 'GET', function($params) {
     $model = new Quote(DB_CONN);
     $controller = new QuoteController($model);
     $return_stmt = null;
