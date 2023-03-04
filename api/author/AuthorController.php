@@ -45,7 +45,7 @@ class AuthorController {
             $author_arr['data_count'] = count($author_arr['data']);
         }
 
-        return json_encode($author_arr);
+        return json_encode($author_arr['data']);
     }
 
     public function read_all($random) {

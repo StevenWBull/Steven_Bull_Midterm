@@ -49,7 +49,7 @@ class QuoteController {
             $quote_arr['data_count'] = count($quote_arr['data']);
         }
 
-        return json_encode($quote_arr);
+        return json_encode($quote_arr['data']);
     }
 
     public function read_all($random) {

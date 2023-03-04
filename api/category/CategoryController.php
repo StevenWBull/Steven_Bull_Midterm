@@ -45,7 +45,7 @@ class CategoryController {
             $category_arr['data_count'] = count($category_arr['data']);
         }
 
-        return json_encode($category_arr);
+        return json_encode($category_arr['data']);
     }
 
     public function read_all($random) {
