@@ -159,4 +159,30 @@ class QuoteController {
             return $this->fatal_error(__FUNCTION__, $e->getMessage());
         }
     }
+
+    public function delete($quote_id) {
+        try {
+            $category_model = $this->model;
+    
+            $result = $category_model->delete($quote_id);
+
+            if ($result instanceof PDOStatement) {
+                $num = $result->rowCount();
+
+                if ($num)
+                    return $this->create_return_arr($result, $num);
+                else {
+                    header('HTTP/1.1 404 Not Found');
+                    return json_encode(array(
+                        'message' => "quote_id Not Found"
+                    ));
+                }
+            } else {
+                header('HTTP/1.1 409 Conflict');
+                return json_encode($result);
+            }
+        } catch (Throwable $e) {
+            return $this->fatal_error(__FUNCTION__, $e->getMessage());
+        }
+    }
 }

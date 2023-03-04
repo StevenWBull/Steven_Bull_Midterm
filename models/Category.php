@@ -124,4 +124,32 @@
                 $this->fatal_error($msg);
             }
         }
+
+        public function delete($category_id) {
+            try {
+                $query = "
+                    DELETE FROM {$this->table}
+                    WHERE id = :id
+                    RETURNING id;
+                ";
+
+                $stmt = $this->conn->prepare($query);
+                $stmt->bindParam(':id', $category_id);
+
+                try {
+                    $stmt->execute();
+                } catch (PDOException $e) {
+                    if ($e->getCode() == '23503') { // 23503 is the SQL state for constraint key violation
+                        preg_match("/Key \((.*)\)=\((.*)\)/", $e->getMessage(), $matches);
+                        $constraint = $matches[1]; // the name of the violated foreign key constraint\
+                        return array('message' => "$constraint Conflict");
+                    }
+                }
+
+                return $stmt;
+            } catch(Throwable $e) {
+                $msg = $e->getMessage();
+                $this->fatal_error($msg);
+            }
+        }
     }

@@ -203,4 +203,64 @@ ROUTER->add("{ROOT_PATH}/api/categories/", 'PUT', function($post_data) {
     echo $return_stmt;
 });
 
+ROUTER->add("{ROOT_PATH}/api/quotes/", 'DELETE', function($post_data) {
+    $model = new Quote(DB_CONN);
+    $controller = new QuoteController($model);
+    $return_stmt = null;
+
+    $quote_id = $post_data['quoteId'];
+
+    if (!$quote_id ) {
+        header('HTTP/1.1 400 Bad Request');
+        echo json_encode(
+            array('message' => "Missing Required Parameters")
+        );
+        return;
+    }
+
+    $return_stmt = $controller->delete($quote_id);
+
+    echo $return_stmt;
+});
+
+ROUTER->add("{ROOT_PATH}/api/authors/", 'DELETE', function($post_data) {
+    $model = new Author(DB_CONN);
+    $controller = new AuthorController($model);
+    $return_stmt = null;
+
+    $author_id = $post_data['authorId'];
+
+    if (!$author_id ) {
+        header('HTTP/1.1 400 Bad Request');
+        echo json_encode(
+            array('message' => "Missing Required Parameters")
+        );
+        return;
+    }
+
+    $return_stmt = $controller->delete($author_id);
+
+    echo $return_stmt;
+});
+
+ROUTER->add("{ROOT_PATH}/api/categories/", 'DELETE', function($post_data) {
+    $model = new Category(DB_CONN);
+    $controller = new CategoryController($model);
+    $return_stmt = null;
+
+    $category_id = $post_data['categoryId'];
+
+    if (!$category_id ) {
+        header('HTTP/1.1 400 Bad Request');
+        echo json_encode(
+            array('message' => "Missing Required Parameters")
+        );
+        return;
+    }
+
+    $return_stmt = $controller->delete($category_id);
+
+    echo $return_stmt;
+});
+
 ROUTER->run();

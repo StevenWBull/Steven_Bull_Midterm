@@ -120,4 +120,30 @@ class AuthorController {
             return $this->fatal_error(__FUNCTION__, $e->getMessage());
         }
     }
+
+    public function delete($author_id) {
+        try {
+            $author_model = $this->model;
+    
+            $result = $author_model->delete($author_id);
+
+            if ($result instanceof PDOStatement) {
+                $num = $result->rowCount();
+
+                if ($num)
+                    return $this->create_return_arr($result, $num);
+                else {
+                    header('HTTP/1.1 404 Not Found');
+                    return json_encode(array(
+                        'message' => "author_id Not Found"
+                    ));
+                }
+            } else {
+                header('HTTP/1.1 409 Conflict');
+                return json_encode($result);
+            }
+        } catch (Throwable $e) {
+            return $this->fatal_error(__FUNCTION__, $e->getMessage());
+        }
+    }
 }

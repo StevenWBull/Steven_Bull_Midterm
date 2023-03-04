@@ -50,9 +50,9 @@ class CategoryController {
 
     public function read_all($random) {
         try {
-            $category = $this->model;
+            $category_model = $this->model;
     
-            $result = $category->read_all();
+            $result = $category_model->read_all();
     
             $num = $result->rowCount();
     
@@ -67,9 +67,9 @@ class CategoryController {
 
     public function read_one($category_id, $random) {
         try {
-            $category = $this->model;
+            $category_model = $this->model;
     
-            $result = $category->read_one($category_id);
+            $result = $category_model->read_one($category_id);
     
             $num = $result->rowCount();
     
@@ -115,6 +115,32 @@ class CategoryController {
                 return json_encode(array(
                     'message' => "category_id Not Found"
                 ));
+            }
+        } catch (Throwable $e) {
+            return $this->fatal_error(__FUNCTION__, $e->getMessage());
+        }
+    }
+
+    public function delete($category_id) {
+        try {
+            $category_model = $this->model;
+    
+            $result = $category_model->delete($category_id);
+
+            if ($result instanceof PDOStatement) {
+                $num = $result->rowCount();
+
+                if ($num)
+                    return $this->create_return_arr($result, $num);
+                else {
+                    header('HTTP/1.1 404 Not Found');
+                    return json_encode(array(
+                        'message' => "category_id Not Found"
+                    ));
+                }
+            } else {
+                header('HTTP/1.1 409 Conflict');
+                return json_encode($result);
             }
         } catch (Throwable $e) {
             return $this->fatal_error(__FUNCTION__, $e->getMessage());
