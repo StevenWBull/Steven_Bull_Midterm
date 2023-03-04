@@ -28,6 +28,7 @@ class Router {
         $method = $_SERVER['REQUEST_METHOD'];
 
         echo $_SERVER['REQUEST_URI'] . "\n";
+        echo var_dump($this->routes);
     
         $route_found = false;
     
