@@ -207,7 +207,7 @@ ROUTER->add(THE_ROOT . "/api/quotes", 'DELETE', function($post_data) {
     $controller = new QuoteController($model);
     $return_stmt = null;
 
-    $quote_id = $post_data['quote_id'];
+    $quote_id = $post_data['id'];
 
     if (!$quote_id ) {
         echo json_encode(
@@ -226,7 +226,7 @@ ROUTER->add(THE_ROOT . "/api/authors", 'DELETE', function($post_data) {
     $controller = new AuthorController($model);
     $return_stmt = null;
 
-    $author_id = $post_data['author_id'];
+    $author_id = $post_data['id'];
 
     if (!$author_id ) {
         echo json_encode(
@@ -245,7 +245,7 @@ ROUTER->add(THE_ROOT . "/api/categories", 'DELETE', function($post_data) {
     $controller = new CategoryController($model);
     $return_stmt = null;
 
-    $category_id = $post_data['category_id'];
+    $category_id = $post_data['id'];
 
     if (!$category_id ) {
         echo json_encode(

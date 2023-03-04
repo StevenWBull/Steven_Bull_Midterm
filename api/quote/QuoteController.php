@@ -154,7 +154,6 @@ class QuoteController {
     
             $result = $category_model->update($quote_id, $quote, $author_id, $category_id);
             
-
             if ($result instanceof PDOStatement && $result->rowCount()) {
                 $num = $result->rowCount();
                 return $this->create_return_arr($result, $num);
@@ -181,7 +180,7 @@ class QuoteController {
                     return $this->create_return_arr($result, $num);
                 else {
                     return json_encode(array(
-                        'message' => "quote_id Not Found"
+                        'message' => "No Quotes Found"
                     ));
                 }
             } else {
