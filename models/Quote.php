@@ -9,6 +9,8 @@
         public $quote;
         public $author;
         public $category;
+        public $author_id;
+        public $category_id;
 
         private $select_stmt;
 
@@ -115,7 +117,7 @@
                 $query = "
                     INSERT INTO {$this->table} (quote, author_id, category_id)
                     VALUES (:quote, :author_id, :category_id)
-                    RETURNING id;
+                    RETURNING id, quote, author_id, category_id;
                 ";
 
                 $stmt = $this->conn->prepare($query);
@@ -133,7 +135,7 @@
                     }
                 }
 
-                return $this->read_one($stmt->fetchColumn());
+                return $stmt;
             } catch(Throwable $e) {
                 $msg = $e->getMessage();
                 $this->fatal_error($msg);
@@ -148,7 +150,7 @@
                         author_id = :author_id,
                         category_id = :category_id
                     WHERE id = :quote_id
-                    RETURNING id;
+                    RETURNING id, quote, author_id, category_id;
                 ";
 
                 $stmt = $this->conn->prepare($query);
@@ -163,7 +165,7 @@
                     return null;
                 }
 
-                return $this->read_one($stmt->fetchColumn());
+                return $stmt;
             } catch(Throwable $e) {
                 $msg = $e->getMessage();
                 $this->fatal_error($msg);
