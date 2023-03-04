@@ -30,10 +30,15 @@ class CategoryController {
             // unpack $row into corresponding variables
             extract($row);
 
-            $category_item = array(
-                'id' => $id,
-                'category' => $category
-            );
+            if ($id && $category)
+                $category_item = array(
+                    'id' => $id,
+                    'category' => $category
+                );
+            else
+                $category_item = array(
+                    'id' => $id
+                );
 
             array_push($category_arr['data'], $category_item);
         }

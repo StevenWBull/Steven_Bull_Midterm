@@ -30,20 +30,26 @@ class QuoteController {
             // unpack $row into corresponding variables
             extract($row);
 
-            if ($author_id && $category_id)
+            if (!$quote)
                 $quote_item = array(
-                    'id' => $id,
-                    'quote' => $quote,
-                    'author_id' => $author_id,
-                    'category_id' => $category_id
+                    'id' => $id
                 );
-            else
-                $quote_item = array(
-                    'id' => $id,
-                    'quote' => $quote,
-                    'author' => $author,
-                    'category' => $category
-                );
+            else {
+                if ($author_id && $category_id)
+                    $quote_item = array(
+                        'id' => $id,
+                        'quote' => $quote,
+                        'author_id' => $author_id,
+                        'category_id' => $category_id
+                    );
+                else
+                    $quote_item = array(
+                        'id' => $id,
+                        'quote' => $quote,
+                        'author' => $author,
+                        'category' => $category
+                    );
+            }
 
             array_push($quote_arr['data'], $quote_item);
         }
