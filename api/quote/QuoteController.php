@@ -1,7 +1,5 @@
 <?php
 
-include_once '../../models/Quote.php';
-
 class QuoteController {
     private $model = null;
 

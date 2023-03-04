@@ -30,10 +30,15 @@ class AuthorController {
             // unpack $row into corresponding variables
             extract($row);
 
-            $author_item = array(
-                'id' => $id,
-                'author' => $author
-            );
+            if ($id && $author)
+                $author_item = array(
+                    'id' => $id,
+                    'author' => $author
+                );
+            else
+                $author_item = array(
+                    'id' => $id
+                );
 
             array_push($author_arr['data'], $author_item);
         }
