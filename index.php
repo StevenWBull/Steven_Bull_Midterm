@@ -1,8 +1,8 @@
 <?php
 
 header('Acces-Control-Allow-Origin: *');
-header("Access-Control-Allow-Headers: *");
-header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
+header('Access-Control-Allow-Headers: Content-Type, Authorization');
+header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
 header('Content-Type: application/json');
 
 require_once 'Router.php';
@@ -87,8 +87,8 @@ ROUTER->add(THE_ROOT . "/api/quotes/", 'POST', function($post_data) {
     $return_stmt = null;
 
     $quote = $post_data['quote'];
-    $author_id = $post_data['authorId'];
-    $category_id = $post_data['categoryId'];
+    $author_id = $post_data['author_id'];
+    $category_id = $post_data['category_id'];
 
     if (!$quote || !$category_id || !$author_id) {
         header('HTTP/1.1 400 Bad Request');
@@ -151,8 +151,8 @@ ROUTER->add(THE_ROOT . "/api/quotes/", 'PUT', function($post_data) {
 
     $quote_id = $post_data['quoteId'];
     $quote = $post_data['quote'];
-    $author_id = $post_data['authorId'];
-    $category_id = $post_data['categoryId'];
+    $author_id = $post_data['author_id'];
+    $category_id = $post_data['category_id'];
 
     if (!$quote_id || !$quote || !$category_id || !$author_id) {
         header('HTTP/1.1 400 Bad Request');
@@ -172,7 +172,7 @@ ROUTER->add(THE_ROOT . "/api/authors/", 'PUT', function($post_data) {
     $controller = new AuthorController($model);
     $return_stmt = null;
 
-    $author_id = $post_data['authorId'];
+    $author_id = $post_data['author_id'];
     $author = $post_data['author'];
 
     if (!$author || !$author_id ) {
@@ -193,7 +193,7 @@ ROUTER->add(THE_ROOT . "/api/categories/", 'PUT', function($post_data) {
     $controller = new CategoryController($model);
     $return_stmt = null;
 
-    $category_id = $post_data['categoryId'];
+    $category_id = $post_data['category_id'];
     $category = $post_data['category'];
 
     if (!$category || !$category_id) {
@@ -214,7 +214,7 @@ ROUTER->add(THE_ROOT . "/api/quotes/", 'DELETE', function($post_data) {
     $controller = new QuoteController($model);
     $return_stmt = null;
 
-    $quote_id = $post_data['quoteId'];
+    $quote_id = $post_data['quote_id'];
 
     if (!$quote_id ) {
         header('HTTP/1.1 400 Bad Request');
@@ -234,7 +234,7 @@ ROUTER->add(THE_ROOT . "/api/authors/", 'DELETE', function($post_data) {
     $controller = new AuthorController($model);
     $return_stmt = null;
 
-    $author_id = $post_data['authorId'];
+    $author_id = $post_data['author_id'];
 
     if (!$author_id ) {
         header('HTTP/1.1 400 Bad Request');
@@ -254,7 +254,7 @@ ROUTER->add(THE_ROOT . "/api/categories/", 'DELETE', function($post_data) {
     $controller = new CategoryController($model);
     $return_stmt = null;
 
-    $category_id = $post_data['categoryId'];
+    $category_id = $post_data['category_id'];
 
     if (!$category_id ) {
         header('HTTP/1.1 400 Bad Request');
