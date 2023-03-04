@@ -17,14 +17,14 @@ require_once './api/category/CategoryController.php';
 define("DATABASE", new Database());
 define("DB_CONN", DATABASE->connect());
 define("ROUTER", new Router());
-define("ROOT_PATH", getenv('ROOT_PATH'));
+define("ROOT_PATH", getenv('ROOT_PATH') ? getenv('ROOT_PATH') : __DIR__);
 
 // GET REQUESTS
 ROUTER->add("/", 'GET', function($params) {
     echo "Hello, world!";
 });
 
-ROUTER->add("{ROOT_PATH}/api/quotes", 'GET', function($params) {
+ROUTER->add(ROOT_PATH . "/api/quotes", 'GET', function($params) {
     $model = new Quote(DB_CONN);
     $controller = new QuoteController($model);
     $return_stmt = null;
@@ -46,7 +46,7 @@ ROUTER->add("{ROOT_PATH}/api/quotes", 'GET', function($params) {
     echo $return_stmt;
 });
 
-ROUTER->add('{ROOT_PATH}/api/authors', 'GET', function($params) {
+ROUTER->add(ROOT_PATH . '/api/authors', 'GET', function($params) {
     $model = new Author(DB_CONN);
     $controller = new AuthorController($model);
     $return_stmt = null;
@@ -62,7 +62,7 @@ ROUTER->add('{ROOT_PATH}/api/authors', 'GET', function($params) {
     echo $return_stmt;
 });
 
-ROUTER->add('{ROOT_PATH}/api/categories', 'GET', function($params) {
+ROUTER->add(ROOT_PATH . '/api/categories', 'GET', function($params) {
     $model = new Category(DB_CONN);
     $controller = new CategoryController($model);
     $return_stmt = null;
@@ -79,7 +79,7 @@ ROUTER->add('{ROOT_PATH}/api/categories', 'GET', function($params) {
 });
 
 // POST REQUESTS
-ROUTER->add("{ROOT_PATH}/api/quotes/", 'POST', function($post_data) {
+ROUTER->add(ROOT_PATH . "/api/quotes/", 'POST', function($post_data) {
     $model = new Quote(DB_CONN);
     $controller = new QuoteController($model);
     $return_stmt = null;
@@ -101,7 +101,7 @@ ROUTER->add("{ROOT_PATH}/api/quotes/", 'POST', function($post_data) {
     echo $return_stmt;
 });
 
-ROUTER->add("{ROOT_PATH}/api/authors/", 'POST', function($post_data) {
+ROUTER->add(ROOT_PATH . "/api/authors/", 'POST', function($post_data) {
     $model = new Author(DB_CONN);
     $controller = new AuthorController($model);
     $return_stmt = null;
@@ -121,7 +121,7 @@ ROUTER->add("{ROOT_PATH}/api/authors/", 'POST', function($post_data) {
     echo $return_stmt;
 });
 
-ROUTER->add("{ROOT_PATH}/api/categories/", 'POST', function($post_data) {
+ROUTER->add(ROOT_PATH . "/api/categories/", 'POST', function($post_data) {
     $model = new Category(DB_CONN);
     $controller = new CategoryController($model);
     $return_stmt = null;
@@ -142,7 +142,7 @@ ROUTER->add("{ROOT_PATH}/api/categories/", 'POST', function($post_data) {
 });
 
 // PUT REQUESTS
-ROUTER->add("{ROOT_PATH}/api/quotes/", 'PUT', function($post_data) {
+ROUTER->add(ROOT_PATH . "/api/quotes/", 'PUT', function($post_data) {
     $model = new Quote(DB_CONN);
     $controller = new QuoteController($model);
     $return_stmt = null;
@@ -165,7 +165,7 @@ ROUTER->add("{ROOT_PATH}/api/quotes/", 'PUT', function($post_data) {
     echo $return_stmt;
 });
 
-ROUTER->add("{ROOT_PATH}/api/authors/", 'PUT', function($post_data) {
+ROUTER->add(ROOT_PATH . "/api/authors/", 'PUT', function($post_data) {
     $model = new Author(DB_CONN);
     $controller = new AuthorController($model);
     $return_stmt = null;
@@ -186,7 +186,7 @@ ROUTER->add("{ROOT_PATH}/api/authors/", 'PUT', function($post_data) {
     echo $return_stmt;
 });
 
-ROUTER->add("{ROOT_PATH}/api/categories/", 'PUT', function($post_data) {
+ROUTER->add(ROOT_PATH . "/api/categories/", 'PUT', function($post_data) {
     $model = new Category(DB_CONN);
     $controller = new CategoryController($model);
     $return_stmt = null;
@@ -207,7 +207,7 @@ ROUTER->add("{ROOT_PATH}/api/categories/", 'PUT', function($post_data) {
     echo $return_stmt;
 });
 
-ROUTER->add("{ROOT_PATH}/api/quotes/", 'DELETE', function($post_data) {
+ROUTER->add(ROOT_PATH . "/api/quotes/", 'DELETE', function($post_data) {
     $model = new Quote(DB_CONN);
     $controller = new QuoteController($model);
     $return_stmt = null;
@@ -227,7 +227,7 @@ ROUTER->add("{ROOT_PATH}/api/quotes/", 'DELETE', function($post_data) {
     echo $return_stmt;
 });
 
-ROUTER->add("{ROOT_PATH}/api/authors/", 'DELETE', function($post_data) {
+ROUTER->add(ROOT_PATH . "/api/authors/", 'DELETE', function($post_data) {
     $model = new Author(DB_CONN);
     $controller = new AuthorController($model);
     $return_stmt = null;
@@ -247,7 +247,7 @@ ROUTER->add("{ROOT_PATH}/api/authors/", 'DELETE', function($post_data) {
     echo $return_stmt;
 });
 
-ROUTER->add("{ROOT_PATH}/api/categories/", 'DELETE', function($post_data) {
+ROUTER->add(ROOT_PATH . "/api/categories/", 'DELETE', function($post_data) {
     $model = new Category(DB_CONN);
     $controller = new CategoryController($model);
     $return_stmt = null;
