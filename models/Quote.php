@@ -90,6 +90,24 @@
             }
         }
 
+        public function read_all_from_category($category_id) {
+            try {
+                $query = $this->select_stmt . "WHERE category_id = :category_id;";
+
+                // Prepare statement
+                $stmt = $this->conn->prepare($query);
+                $stmt->bindParam(':category_id', $category_id);
+
+                // Execute Query
+                $stmt->execute();
+
+                return $stmt;
+            } catch(Throwable $e) {
+                $msg = $e->getMessage();
+                $this->fatal_error($msg);
+            }
+        }
+
         public function read_all_from_author_with_category($author_id, $category_id) {
             try {
                 $query = $this->select_stmt . "

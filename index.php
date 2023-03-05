@@ -39,6 +39,8 @@ ROUTER->add(THE_ROOT . "/api/quotes", 'GET', function($params) {
         $return_stmt = $controller->read_all_from_author_with_category($author_id, $category_id, $random);
     else if ($author_id)
         $return_stmt = $controller->read_all_from_author($author_id, $random);
+    else if ($category_id)
+        $return_stmt = $controller->read_all_from_category($category_id, $random);
     else if ($quote_id)
         $return_stmt = $controller->read_one($quote_id, $random);
     else

@@ -117,6 +117,23 @@ class QuoteController {
         }
     }
 
+    public function read_all_from_category($category_id, $random) {
+        try {
+            $quote = $this->model;
+    
+            $result = $quote->read_all_from_category($category_id);
+    
+            $num = $result->rowCount();
+    
+            if ($num > 0)
+                return $this->create_return_arr($result, $num, $random);
+            else
+                return $this->no_data_found();
+        } catch (Throwable $e) {
+            return $this->fatal_error(__FUNCTION__, $e->getMessage());
+        }
+    }
+
     public function read_all_from_author_with_category($author_id, $category_id, $random) {
         try {
             $quote = $this->model;
