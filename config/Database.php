@@ -4,8 +4,18 @@ final class Database {
 
     public function __construct() {
         try {
-            $pgsql_conn_str = "pgsql:host=" . getenv('DB_HOST') . ";port=" . getenv('DB_PORT') . ";dbname=" . getenv('DB_NAME') . ";sslmode=require;sslcert=~/.postgresql/postgresql.crt";
-            $this->conn = new PDO($pgsql_conn_str, getenv('DB_USERNAME'), getenv('DB_PASS'));
+            // Parse the connection string
+            $parsed = parse_url(getenv('DATABASE_URL'));
+
+            // Extract the different components
+            $host = $parsed['host'];
+            $port = $parsed['port'];
+            $db_name = ltrim($parsed['path'], '/');
+            $username = $parsed['user'];
+            $password = $parsed['pass'];
+
+            $pgsql_conn_str = "pgsql:host=" . $host . ";port=" . $port . ";dbname=" . $db_name . ";sslmode=require;sslcert=~/.postgresql/postgresql.crt";
+            $this->conn = new PDO($pgsql_conn_str, $username, $password);
             $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch(PDOException $e) {
             echo 'Connection Error: ' . $e->getMessage();
